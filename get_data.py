@@ -23,9 +23,8 @@ MONTH_DAY_START = '01'             # Day 01
 MONTH_DAY_END = '03'               # Day 02
 '''
 
-today = datetime.date.today().strftime("%d %m %Y %H %M").split(" ")
-
-yesterday = (datetime.datetime.now() - datetime.timedelta(7)).strftime('%d %m %Y').split(" ")
+today = datetime.datetime.now().strftime("%d %m %Y %H %M").split(" ")
+yesterday = (datetime.datetime.now() - datetime.timedelta(7)).strftime('%d %m %Y %H %M').split(" ")
 
 YEAR_NOW = today[2]                        # Year
 MONTH_NOW = today[1]                       # Month

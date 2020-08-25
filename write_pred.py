@@ -23,7 +23,7 @@ client = InfluxDBClient(host=INFLUXDB_HOST,
 
 meter = 'sm45'
 
-with open("/home/ceos/csv/08_2020/08_2020_sm45.csv") as file:
+with open("/home/ceos/ceos_inference.csv") as file:
      data = [line.split(',') for line in file]
     
 write_this = []
@@ -31,12 +31,13 @@ write_this = []
 
 for i in range(len(data)-1):
 
-    write_this.append({"measurement": "predictions10",
+    write_this.append({"measurement": "predictions",
                         "tags": {"meter": meter},
                         "fields": {"forecast": data[i+1][1][:-3]},
                         "time": data[i+1][0]
 	              })
 
+client.drop_measurement("predictions")    
 client.write_points(write_this, time_precision='s',protocol='json')
 
-print(client.query('SELECT * FROM "predictions10"'))
+print(client.query('SELECT * FROM "predictions"'))

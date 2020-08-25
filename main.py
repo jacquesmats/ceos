@@ -30,14 +30,12 @@ def main():
 
 
     data_valid = dataset_15_minutes.iloc[-24*24:]
-
-    fator_norm = np.max(data_valid.values)
-
+    fator_norm = np.nanmax(data_valid.values)
+    
     X_valid = data_valid.values / fator_norm
     X_valid = X_valid.reshape((24,minutes_15_input,1))
 
     y_pred = model.predict(X_valid)
-
     y_pred = y_pred * fator_norm
 
     # Get the last 2 hours
@@ -56,10 +54,10 @@ def main():
     df = pd.DataFrame(data=d)
 
     # Concat the last 2 hours + 1 hour prediction ahead
-    plot_values_concat = pd.concat([plot_values, df]).reset_index()
+    #plot_values_concat = pd.concat([plot_values, df]).reset_index()
 
     # Save to CSV
-    plot_values_concat.to_csv("ceos_inference.csv", index=False)
+    df.to_csv("ceos_inference.csv", index=False)
 
 if __name__ == "__main__":
     main()
