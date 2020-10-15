@@ -24,16 +24,16 @@ def main():
     dataset = pd.read_csv(os.path.join(filename_path,filename), parse_dates=['time'], index_col=['time'])
     dataset_15_minutes = dataset #[:'2020-03-01 14:00:00':]
 
-    model_path = os.path.join(os.getcwd(), 'model')
+    model_path = os.path.join('/home/ceos', 'model')
     # Load Model
     model = tf.keras.models.load_model(model_path)
 
 
-    data_valid = dataset_15_minutes.iloc[-24*24:]
+    data_valid = dataset_15_minutes.iloc[-24*80:]
     fator_norm = np.nanmax(data_valid.values)
     
     X_valid = data_valid.values / fator_norm
-    X_valid = X_valid.reshape((24,minutes_15_input,1))
+    X_valid = X_valid.reshape((80,minutes_15_input,1))
 
     y_pred = model.predict(X_valid)
     y_pred = y_pred * fator_norm
@@ -57,7 +57,7 @@ def main():
     #plot_values_concat = pd.concat([plot_values, df]).reset_index()
 
     # Save to CSV
-    df.to_csv("ceos_inference.csv", index=False)
+    df.to_csv("/home/ceos/ceos_inference.csv", index=False)
 
 if __name__ == "__main__":
     main()

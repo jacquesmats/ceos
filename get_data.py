@@ -24,7 +24,7 @@ MONTH_DAY_END = '03'               # Day 02
 '''
 
 today = datetime.datetime.now().strftime("%d %m %Y %H %M").split(" ")
-yesterday = (datetime.datetime.now() - datetime.timedelta(7)).strftime('%d %m %Y %H %M').split(" ")
+yesterday = (datetime.datetime.now() - datetime.timedelta(21)).strftime('%d %m %Y %H %M').split(" ")
 
 YEAR_NOW = today[2]                        # Year
 MONTH_NOW = today[1]                       # Month
@@ -71,7 +71,7 @@ def main():
     for index in DEV_LIST:
 
         try:
-            query = 'SELECT mean("PA") + mean("PB") + mean("PC") AS "Value" FROM "payload_fields" WHERE ("device_id" = \'' + index + '\') AND ' + dataStart + ' AND ' + dataEnd + ' GROUP BY time(15m)'
+            query = 'SELECT mean("PA") + mean("PB") + mean("PC") AS "Value" FROM "payload_fields" WHERE ("device_id" = \'' + index + '\') AND ' + dataStart + ' AND ' + dataEnd + ' GROUP BY time(1m)'
             results = client.query(query)
 
             print(query)
@@ -84,7 +84,11 @@ def main():
             continue
 
         dirName = "csv/" + MONTH_NOW + "_" +YEAR_NOW
-        if not os.path.exists(dirName):
+        
+        if os.path.exists(dirName):
+            os.system("rm -r" + dirName)
+
+        elif not os.path.exists(dirName):
             os.makedirs(dirName)
 
         with open(dirName + "/" + MONTH_NOW + "_" + YEAR_NOW + "_" + index + ".csv", "a", newline='') as fp:
