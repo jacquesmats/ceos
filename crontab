@@ -1,0 +1,5 @@
+
+*/15 * * * * root echo "Start"  >> /var/log/ceos-cron.log 2>&1
+*/15 * * * * root python3 /home/ceos/get_data.py >> /var/log/ceos-cron.log 2>&1 && python3 /home/ceos/main.py >> /var/log/ceos-cron.log 2>&1 && python3 /home/ceos/write_pred.py >> /var/log/ceos-cron.log 2>&1
+
+# Don't remove the empty line at the end of this file. It is required to run the cron job
